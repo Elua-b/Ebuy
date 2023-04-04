@@ -1,6 +1,6 @@
-import { hashPassword } from "../helpers/authHelper";
-import userModels from "../models/userModels";
-export const registerController=async(req,res)=>{
+const { hashPassword } =require( "../helpers/authHelper")
+const  userModels =require( "../models/userModels")
+ const registerController=async(req,res)=>{
     try {
         const {name,email,password,phone,address}=req.body;
         if(!name){
@@ -26,7 +26,7 @@ export const registerController=async(req,res)=>{
             })
         }
         const hashedPassword=await hashPassword(password)
-        const user= new userModels({name,email,password:hashedPassword,phone,address}).save()
+        const user=await new userModels({name,email,password:hashedPassword,phone,address}).save()
         res.status(201).send(
             {
                 success:true,
@@ -37,4 +37,7 @@ export const registerController=async(req,res)=>{
     } catch (error) {
         console.log(error);
     }
+}
+module.exports={
+    registerController
 }
